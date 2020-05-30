@@ -3,6 +3,7 @@
 # encoding=utf-8
 
 import os.path
+import sys
 import random
 import hashlib
 import string
@@ -144,12 +145,17 @@ class GC:
             self.ans[w] = self.garbled_wire[self._wire[w]].index(wire[self._wire[w]])
 
 def main():
+    if len(sys.argv) == 1:
+        print("please input circuit file")
+        exit(0)
+
     print("-Garbled Circuit-")
     input_wire = []
     output_wire = []
     circuit = []
-    if os.path.isfile("circuit/gc"):
-        f = open("circuit/gc", "r")
+    circuit_file = sys.argv[1]
+    if os.path.isfile(circuit_file):
+        f = open(circuit_file, "r")
         if f.mode == "r":
             lines = f.readlines()
             input_wire = lines.pop(0).split()
@@ -158,7 +164,7 @@ def main():
                 circuit.append(line)
         f.close()
     else:
-        print("gc.txt not found")
+        print("circuit file not found")
         exit(0)
 
     plaintext = input("Input message:")
