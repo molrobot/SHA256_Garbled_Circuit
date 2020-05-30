@@ -1,16 +1,15 @@
 # **Garbled Circuit**
 
-## Basic Function
 > Reading circuit from a file. Only support combinational circuit and it must be hierarchy.
 
-### Circuit File Description Format
+## Circuit File Description Format
 ```
 > The first line contains all of the circuit input name tag, separate with space.  
 > The second line contains all of the circuit output name tag, separate with space.  
 > The next ***n*** lines are the two-input logic gates description, each line contains the logic type, first input name, second input name, and output name.
 ```
 
-### Sameple Circuit Description
+## Sameple Circuit Description
 > circuit_file.txt
 ```
 i1 i2 i3 i4
@@ -22,26 +21,26 @@ NAND o1 i1 o4
 NOR o2 o3 o5
 ```
 
-### Input Format
+## Input Format
 The input only have one line string ***s*** with 0 or 1. 
 
-### Output Format
+## Output Format
 Output ***lo*** lines, which indicates the number of circuit output wire and each line has a name tag and a number either 0 or 1.
 
-### Technical Specification
+## Technical Specification
 The input string length ***l<sub>s</sub>*** must same as the number of circuit input wire.
 
-### Execute
+## Execute
 ```
 > python garbled_circuit.py circuit_file.txt
 ```
 
-### Sample Input:
+## Sample Input:
 ```
 1010
 ```
 
-### Sample Output:
+## Sample Output:
 ```
 o1 1
 o2 0
@@ -50,13 +49,12 @@ o4 0
 o5 0
 ```
 
-## SHA256 with Garbled Circuit
-> As same as the basic function, I also wrote it in another "class", and easily call the `garbled_circuit` function to calculate.
+# SHA256 with Garbled Circuit
 
-### Execute
-> Using `python sha256_gc.py` to generate the input string randomly or `python sha256_gc.py <arg1>` to indicate the string.
+## Execute
+> Using `python gererate_circuit.py` to generate the sha256 circuit file.
 
-### Example
+## Example
 ```
 > python sha256_gc.py
 

@@ -230,6 +230,7 @@ def main():
         print(sha256_.hexdigest())
     else:
         plaintext = sys.argv[1]
+        print("INPUT STRING: " + plaintext)
         sha256_ = sha256(plaintext)
         print(sha256_.hexdigest())
 
