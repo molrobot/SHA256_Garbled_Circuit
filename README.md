@@ -52,7 +52,7 @@ o5 0
 # SHA256 with Garbled Circuit
 
 ## Execute
-> Using `python gererate_circuit.py` to generate the sha256 circuit file.
+> Using `python circuit_gererator.py` to generate the sha256 circuit file.
 
 ## Example
 ```
