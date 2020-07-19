@@ -6,21 +6,21 @@ import os
 import string
 
 def ma_gen():
-    f = open("circuit\\ma", "w")
+    f = open("circuit/ma", "w")
     if f.mode == "w":
         # generate input and output wire name tag
         for i in range(0, 32):
-            s = "x_" + str(i) + ' '
+            s = "x_" + str(i) + " "
             f.write(s)
         for i in range(0, 32):
-            s = "y_" + str(i) + ' '
+            s = "y_" + str(i) + " "
             f.write(s)
         for i in range(0, 32):
-            s = "z_" + str(i) + ' '
+            s = "z_" + str(i) + " "
             f.write(s)
         f.write("\n")
         for i in range(0, 32):
-            s = "o_" + str(i) + ' '
+            s = "o_" + str(i) + " "
             f.write(s)
         f.write("\n")
 
@@ -47,21 +47,21 @@ def ma_gen():
     f.close()
 
 def ch_gen():
-    f = open("circuit\\ch", "w")
+    f = open("circuit/ch", "w")
     if f.mode == "w":
         # generate input and output wire name tag
         for i in range(0, 32):
-            s = "x_" + str(i) + ' '
+            s = "x_" + str(i) + " "
             f.write(s)
         for i in range(0, 32):
-            s = "y_" + str(i) + ' '
+            s = "y_" + str(i) + " "
             f.write(s)
         for i in range(0, 32):
-            s = "z_" + str(i) + ' '
+            s = "z_" + str(i) + " "
             f.write(s)
         f.write("\n")
         for i in range(0, 32):
-            s = "o_" + str(i) + ' '
+            s = "o_" + str(i) + " "
             f.write(s)
         f.write("\n")
 
@@ -87,15 +87,15 @@ def ch_gen():
     f.close()
 
 def s00_gen():
-    f = open("circuit\\s00", "w")
+    f = open("circuit/s00", "w")
     if f.mode == "w":
         # generate input and output wire name tag
         for i in range(0, 32):
-            s = "x_" + str(i) + ' '
+            s = "x_" + str(i) + " "
             f.write(s)
         f.write("\n")
         for i in range(0, 32):
-            s = "o_" + str(i) + ' '
+            s = "o_" + str(i) + " "
             f.write(s)
         f.write("\n")
 
@@ -110,15 +110,15 @@ def s00_gen():
     f.close()
 
 def s01_gen():
-    f = open("circuit\\s01", "w")
+    f = open("circuit/s01", "w")
     if f.mode == "w":
         # generate input and output wire name tag
         for i in range(0, 32):
-            s = "x_" + str(i) + ' '
+            s = "x_" + str(i) + " "
             f.write(s)
         f.write("\n")
         for i in range(0, 32):
-            s = "o_" + str(i) + ' '
+            s = "o_" + str(i) + " "
             f.write(s)
         f.write("\n")
 
@@ -133,15 +133,15 @@ def s01_gen():
     f.close()
 
 def s10_gen():
-    f = open("circuit\\s10", "w")
+    f = open("circuit/s10", "w")
     if f.mode == "w":
         # generate input and output wire name tag
         for i in range(0, 32):
-            s = "x_" + str(i) + ' '
+            s = "x_" + str(i) + " "
             f.write(s)
         f.write("\n")
         for i in range(0, 32):
-            s = "o_" + str(i) + ' '
+            s = "o_" + str(i) + " "
             f.write(s)
         f.write("\n")
 
@@ -160,15 +160,15 @@ def s10_gen():
     f.close()
 
 def s11_gen():
-    f = open("circuit\\s11", "w")
+    f = open("circuit/s11", "w")
     if f.mode == "w":
         # generate input and output wire name tag
         for i in range(0, 32):
-            s = "x_" + str(i) + ' '
+            s = "x_" + str(i) + " "
             f.write(s)
         f.write("\n")
         for i in range(0, 32):
-            s = "o_" + str(i) + ' '
+            s = "o_" + str(i) + " "
             f.write(s)
         f.write("\n")
 
@@ -187,7 +187,7 @@ def s11_gen():
     f.close()
 
 def main():
-    # print(os.path.abspath('.'))
+    # print(os.path.abspath("."))
     if not os.path.exists("circuit"):
         os.mkdir("circuit")
     ch_gen()

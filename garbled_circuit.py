@@ -114,12 +114,12 @@ class GC:
     # generate md5 hash value
     def get_md5hash(self, data):
         m = hashlib.md5()
-        m.update(data.encode('utf-8'))
+        m.update(data.encode("utf-8"))
         return m.hexdigest()
 
     # generate random string
     def keygen(self):
-        return ''.join(random.choices(string.ascii_uppercase + string.digits, k=10))
+        return "".join(random.choices(string.ascii_uppercase + string.digits, k=10))
 
     # find hash value in the truth table
     def find_table(self, md5hash, i):

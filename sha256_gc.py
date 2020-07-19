@@ -40,10 +40,10 @@ class sha256:
     # pre-processing
     def pre_process(self):
         length = len(self.message)
-        self.message += '1'
+        self.message += "1"
         while len(self.message) % 512 != 448:
-            self.message += '0'
-        self.message += '{0:064b}'.format(length)
+            self.message += "0"
+        self.message += "{0:064b}".format(length)
         # print(len(self.message))
 
     # process the message in successive 512-bit chunks
@@ -104,80 +104,80 @@ class sha256:
 
     # s0
     def _sigma00(self, x):
-        gc_ = garbled_circuit.GC(x, self._input_wire['s00'], self._output_wire['s00'], self._circuit['s00'])
+        gc_ = garbled_circuit.GC(x, self._input_wire["s00"], self._output_wire["s00"], self._circuit["s00"])
         gc_.update()
         ans = gc_.ans
         self.genTime += gc_.genTime
         self.decTime += gc_.decTime
         s = ""
         for i in range(0, 32):
-            s += str(ans['o_' + str(i)])
+            s += str(ans["o_" + str(i)])
         return s
 
     # s1
     def _sigma01(self, x):
-        gc_ = garbled_circuit.GC(x, self._input_wire['s01'], self._output_wire['s01'], self._circuit['s01'])
+        gc_ = garbled_circuit.GC(x, self._input_wire["s01"], self._output_wire["s01"], self._circuit["s01"])
         gc_.update()
         ans = gc_.ans
         self.genTime += gc_.genTime
         self.decTime += gc_.decTime
         s = ""
         for i in range(0, 32):
-            s += str(ans['o_' + str(i)])
+            s += str(ans["o_" + str(i)])
         return s
 
     # S0
     def _sigma10(self, x):
-        gc_ = garbled_circuit.GC(x, self._input_wire['s10'], self._output_wire['s10'], self._circuit['s10'])
+        gc_ = garbled_circuit.GC(x, self._input_wire["s10"], self._output_wire["s10"], self._circuit["s10"])
         gc_.update()
         ans = gc_.ans
         self.genTime += gc_.genTime
         self.decTime += gc_.decTime
         s = ""
         for i in range(0, 32):
-            s += str(ans['o_' + str(i)])
+            s += str(ans["o_" + str(i)])
         return s
 
     # S1
     def _sigma11(self, x):
-        gc_ = garbled_circuit.GC(x, self._input_wire['s11'], self._output_wire['s11'], self._circuit['s11'])
+        gc_ = garbled_circuit.GC(x, self._input_wire["s11"], self._output_wire["s11"], self._circuit["s11"])
         gc_.update()
         ans = gc_.ans
         self.genTime += gc_.genTime
         self.decTime += gc_.decTime
         s = ""
         for i in range(0, 32):
-            s += str(ans['o_' + str(i)])
+            s += str(ans["o_" + str(i)])
         return s
 
     # Ma
     def _ma(self, a, b, c):
-        gc_ = garbled_circuit.GC(a + b + c, self._input_wire['ma'], self._output_wire['ma'], self._circuit['ma'])
+        gc_ = garbled_circuit.GC(a + b + c, self._input_wire["ma"], self._output_wire["ma"], self._circuit["ma"])
         gc_.update()
         ans = gc_.ans
         self.genTime += gc_.genTime
         self.decTime += gc_.decTime
         s = ""
         for i in range(0, 32):
-            s += str(ans['o_' + str(i)])
+            s += str(ans["o_" + str(i)])
         return s
 
     # Ch
     def _ch(self, a, b, c):
-        gc_ = garbled_circuit.GC(a + b + c, self._input_wire['ch'], self._output_wire['ch'], self._circuit['ch'])
+        gc_ = garbled_circuit.GC(a + b + c, self._input_wire["ch"], self._output_wire["ch"], self._circuit["ch"])
         gc_.update()
         ans = gc_.ans
         self.genTime += gc_.genTime
         self.decTime += gc_.decTime
         s = ""
         for i in range(0, 32):
-            s += str(ans['o_' + str(i)])
+            s += str(ans["o_" + str(i)])
         return s
 
     # produce the final hash value
     # transform binary to heximal
     def hexdigest(self):
-        bits = ''.join(l for l in self._h)
+        bits = "".join(l for l in self._h)
         return hex(int(bits, 2))
 
     # load variables from file
@@ -218,13 +218,13 @@ class sha256:
                 f.close()
 
     # transform text to binary
-    def text_to_bits(self, text, encoding='utf-8', errors='surrogatepass'):
-        bits = bin(int.from_bytes(text.encode(encoding, errors), 'big'))[2:]
+    def text_to_bits(self, text, encoding="utf-8", errors="surrogatepass"):
+        bits = bin(int.from_bytes(text.encode(encoding, errors), "big"))[2:]
         self.message = bits.zfill(8 * ((len(bits) + 7) // 8))
 
 def main():
     if len(sys.argv) == 1:
-        plaintext = ''.join(random.choices(string.ascii_uppercase + string.digits + string.ascii_lowercase, k=32))
+        plaintext = "".join(random.choices(string.ascii_uppercase + string.digits + string.ascii_lowercase, k=32))
         print("RANDOM STRING: " + plaintext)
         sha256_ = sha256(plaintext)
         print(sha256_.hexdigest())
