@@ -4,21 +4,20 @@
 
 import os
 import sys
-import queue
 import string
 import random
-import garbled_circuit
+from garbled_circuit import garbled_circuit
 
 class sha256:
     # initial
     def __init__(self, plaintext):
-        self._h = [] # data block of variables h[0] .. h[7]
-        self._k = [] # data block of constants k[0] .. k[63]
+        self._h = list() # data block of variables h[0] .. h[7]
+        self._k = list() # data block of constants k[0] .. k[63]
         self._pathtext = ["ch", "ma", "s00", "s01", "s10", "s11"]
         self._circuit = dict()
         self._input_wire = dict()
         self._output_wire = dict()
-        self.message = []
+        self.message = list()
         self.genTime = 0
         self.decTime = 0
 
@@ -36,7 +35,7 @@ class sha256:
             exit(0)
         print("Generate garbled circuit: ", self.genTime)
         print("Drcrypt garbled circuit: ", self.decTime)
-    
+
     # pre-processing
     def pre_process(self):
         length = len(self.message)
@@ -58,7 +57,6 @@ class sha256:
                 while len(self._h[i]) > 32:
                     self._h[i] = self._h[i][1:]
 
-    
     # extend the sixteen 32-bit words into sixty-four 32-bit words
     def extend(self, chunk):
         w = []
@@ -66,10 +64,10 @@ class sha256:
             w_ = chunk[i:i + 32]
             w.append(w_)
         for i in range(16, 64):
-            s0 = self._sigma10(w[i - 15])
-            s1 = self._sigma11(w[i - 2])
-            w_ = format(int(w[i - 16], 2) + int(s0, 2) \
-                 + int(w[i - 7], 2) + int(s1, 2), "032b")
+            s0 = self._sigma("s10", w[i - 15])
+            s1 = self._sigma("s11", w[i - 2])
+            w_ = format(int(w[i - 16], 2) + int(s0, 2) + \
+                        int(w[i - 7], 2) + int(s1, 2), "032b")
             while len(w_) > 32:
                 w_ = w_[1:]
             w.append(w_)
@@ -78,97 +76,46 @@ class sha256:
     # process main loop
     def main_loop(self, w, al):
         for i in range(0, 64):
-            s0 = self._sigma00(al[0])
-            ma = self._ma(al[0], al[1], al[2])
+            s0 = self._sigma("s00", al[0])
+            ma = self._mach("ma", al[0], al[1], al[2])
             t2 = format(int(s0, 2) + int(ma, 2), "032b")
             while len(t2) > 32:
                 t2 = t2[1:]
-            s1 = self._sigma01(al[4])
-            ch = self._ch(al[4], al[5], al[6])
-            t1 = format(int(al[7], 2) + int(s1, 2) + int(ch, 2) \
-                 + int(self._k[i], 2) + int(w[i], 2), "032b")
+            s1 = self._sigma("s01", al[4])
+            ch = self._mach("ch", al[4], al[5], al[6])
+            t1 = format(int(al[7], 2) + int(s1, 2) + int(ch, 2) + \
+                        int(self._k[i], 2) + int(w[i], 2), "032b")
             while len(t1) > 32:
                 t1 = t1[1:]
-            al[7] = al[6]
-            al[6] = al[5]
-            al[5] = al[4]
-            al[4] = format(int(al[3], 2) + int(t1, 2), "032b")
+
+            al.pop()
+            al.insert(0, format(int(t1, 2) + int(t2, 2), "032b"))
+            al[4] = format(int(al[4], 2) + int(t1, 2), "032b")
+
             while len(al[4]) > 32:
                 al[4] = al[4][1:]
-            al[3] = al[2]
-            al[2] = al[1]
-            al[1] = al[0]
-            al[0] = format(int(t1, 2) + int(t2, 2), "032b")
             while len(al[0]) > 32:
                 al[0] = al[0][1:]
 
-    # s0
-    def _sigma00(self, x):
-        gc_ = garbled_circuit.GC(x, self._input_wire["s00"], self._output_wire["s00"], self._circuit["s00"])
-        gc_.update()
-        ans = gc_.ans
-        self.genTime += gc_.genTime
-        self.decTime += gc_.decTime
+    # Sigma
+    def _sigma(self, tag, x):
+        gc = garbled_circuit(x, self._input_wire[tag], self._output_wire[tag], self._circuit[tag])
+        gc.update()
+        ans = gc.ans
+        self.genTime += gc.genTime
+        self.decTime += gc.decTime
         s = ""
         for i in range(0, 32):
             s += str(ans["o_" + str(i)])
         return s
 
-    # s1
-    def _sigma01(self, x):
-        gc_ = garbled_circuit.GC(x, self._input_wire["s01"], self._output_wire["s01"], self._circuit["s01"])
-        gc_.update()
-        ans = gc_.ans
-        self.genTime += gc_.genTime
-        self.decTime += gc_.decTime
-        s = ""
-        for i in range(0, 32):
-            s += str(ans["o_" + str(i)])
-        return s
-
-    # S0
-    def _sigma10(self, x):
-        gc_ = garbled_circuit.GC(x, self._input_wire["s10"], self._output_wire["s10"], self._circuit["s10"])
-        gc_.update()
-        ans = gc_.ans
-        self.genTime += gc_.genTime
-        self.decTime += gc_.decTime
-        s = ""
-        for i in range(0, 32):
-            s += str(ans["o_" + str(i)])
-        return s
-
-    # S1
-    def _sigma11(self, x):
-        gc_ = garbled_circuit.GC(x, self._input_wire["s11"], self._output_wire["s11"], self._circuit["s11"])
-        gc_.update()
-        ans = gc_.ans
-        self.genTime += gc_.genTime
-        self.decTime += gc_.decTime
-        s = ""
-        for i in range(0, 32):
-            s += str(ans["o_" + str(i)])
-        return s
-
-    # Ma
-    def _ma(self, a, b, c):
-        gc_ = garbled_circuit.GC(a + b + c, self._input_wire["ma"], self._output_wire["ma"], self._circuit["ma"])
-        gc_.update()
-        ans = gc_.ans
-        self.genTime += gc_.genTime
-        self.decTime += gc_.decTime
-        s = ""
-        for i in range(0, 32):
-            s += str(ans["o_" + str(i)])
-        return s
-
-    # Ch
-    def _ch(self, a, b, c):
-        gc_ = garbled_circuit.GC(a + b + c, self._input_wire["ch"], self._output_wire["ch"], self._circuit["ch"])
-        gc_.update()
-        ans = gc_.ans
-        self.genTime += gc_.genTime
-        self.decTime += gc_.decTime
+    # Ma、Ch
+    def _mach(self, tag, a, b, c):
+        gc = garbled_circuit(a + b + c, self._input_wire[tag], self._output_wire[tag], self._circuit[tag])
+        gc.update()
+        ans = gc.ans
+        self.genTime += gc.genTime
+        self.decTime += gc.decTime
         s = ""
         for i in range(0, 32):
             s += str(ans["o_" + str(i)])
@@ -178,7 +125,7 @@ class sha256:
     # transform binary to heximal
     def hexdigest(self):
         bits = "".join(l for l in self._h)
-        return hex(int(bits, 2))
+        return "{0:0{1}x}".format(int(bits, 2), 64)
 
     # load variables from file
     def read_h(self):
@@ -226,14 +173,11 @@ def main():
     if len(sys.argv) == 1:
         plaintext = "".join(random.choices(string.ascii_uppercase + string.digits + string.ascii_lowercase, k=32))
         print("RANDOM STRING: " + plaintext)
-        sha256_ = sha256(plaintext)
-        print(sha256_.hexdigest())
     else:
         plaintext = sys.argv[1]
         print("INPUT STRING: " + plaintext)
-        sha256_ = sha256(plaintext)
-        print(sha256_.hexdigest())
+    sha256_gc = sha256(plaintext)
+    print(sha256_gc.hexdigest())
 
-# main function execution
 if __name__ == "__main__":
     main()
