@@ -9,16 +9,16 @@ import hashlib
 import string
 import time
 
-class GC:
+class garbled_circuit:
     # initial
     def __init__(self, plaintext, input_wire, output_wire, circuit):
         self.message = ""
-        self._input_wire = [] # name of input line
-        self._output_wire = [] # name of output line
+        self._input_wire = list() # name of input line
+        self._output_wire = list() # name of output line
         self._wire = dict() # name of line
         self.garbled_wire = dict() # garbled name of line
-        self._circuit = [] # circuit description like verilog
-        self.garbled_truth_table = [] # garbled truth table
+        self._circuit = list() # circuit description like verilog
+        self.garbled_truth_table = list() # garbled truth table
         self.ans = dict()
 
         # calculate generation time
@@ -109,7 +109,6 @@ class GC:
         for w in gate[1:]:
             if (not w in self._wire.keys()):
                 self._wire[w] = self.keygen()
-        return 0
 
     # generate md5 hash value
     def get_md5hash(self, data):
@@ -169,19 +168,18 @@ def main():
 
     plaintext = input("Input message:")
     if len(input_wire) == len(plaintext):
-        gc_ = GC(plaintext, input_wire, output_wire, circuit)
-        gc_.update()
+        gc = garbled_circuit(plaintext, input_wire, output_wire, circuit)
+        gc.update()
         print("Garbled wire:")
-        print(gc_.garbled_wire)
+        print(gc.garbled_wire)
         print("Garbled truth table:")
-        print(gc_.garbled_truth_table)
+        print(gc.garbled_truth_table)
         print("Answer of decryption:")
-        for key, i in gc_.ans.items():
+        for key, i in gc.ans.items():
             print(key, i)
     else:
         print("Input circuit error!")
         exit(0)
 
-# main function execution
 if __name__ == "__main__":
     main()
