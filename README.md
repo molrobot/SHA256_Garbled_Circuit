@@ -1,15 +1,16 @@
 # **Garbled Circuit**
 
-> Reading circuit from a file. Only support combinational circuit and it must be hierarchy.
+Reading circuit from a file. Only support combinational circuit and it must be hierarchy.
 
 ## Circuit File Description Format
-```
-> The first line contains all of the circuit input name tag, separate with space.  
-> The second line contains all of the circuit output name tag, separate with space.  
-> The next ***n*** lines are the two-input logic gates description, each line contains the logic type, first input name, second input name, and output name.
-```
 
-## Sameple Circuit Description
+The first line contains all of the circuit input name tag, separate with space.  
+The second line contains all of the circuit output name tag, separate with space.
+
+The next ***n*** lines are the two-input logic gates description, each line contains the logic type, first input name, second input name, and output name.
+
+
+## Sample Circuit Description
 > circuit_file.txt
 ```
 i1 i2 i3 i4
@@ -32,7 +33,7 @@ The input string length ***l<sub>s</sub>*** must same as the number of circuit i
 
 ## Execute
 ```
-> python garbled_circuit.py circuit_file.txt
+$ python garbled_circuit.py circuit_file.txt
 ```
 
 ## Sample Input:
@@ -51,12 +52,12 @@ o5 0
 
 # SHA256 with Garbled Circuit
 
-## Execute
-> Using `python circuit_gererator.py` to generate the sha256 circuit file.
+## Prepare
+Using `python circuit_gererator.py` to generate the sha256 circuit file.
 
 ## Example
 ```
-> python sha256_gc.py
+$ python sha256_gc.py
 
 RANDOM STRING: A5V6S8M8qoIgte16PPls1Qq7LAtinDSO
 Generate garbled circuit:  1.0856802463531494
@@ -64,9 +65,10 @@ Drcrypt garbled circuit:  0.11695456504821777
 0x2b0fea56f3f4bd0305c0e9c1f69f9b1815563e9699f43ad73c2deab62d213412
 ```
 ```
-> python sha256_gc.py AAAAAAAAA
+$ python sha256_gc.py uAAAAAAAAAAAA
 
-Generate garbled circuit:  1.080643653869629
-Drcrypt garbled circuit:  0.10996103286743164
-0xe5f9176ecd90317cf2d4673926c9db65475b0b58e7f468586ddaef280a98cdbd
+INPUT STRING: uAAAAAAAAAAAA
+Generate garbled circuit:  1.098142147064209
+Drcrypt garbled circuit:  0.10696935653686523
+03ef0cd7871e4278b1f1b0554678ceee09b13abaf224c666018f98a5c4cd3425
 ```
